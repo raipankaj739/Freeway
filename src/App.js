@@ -6,6 +6,7 @@ import ChatList from "./screens/ChatList/";
 import ChatScreen from "./screens/ChatScreen";
 import PhotoCardDetails from "./screens/PhotoCardDetails";
 import Faq from "./screens/Faq";
+import NewSearch from "./screens/NewSearch";
 
 const App = createStackNavigator(
   {
@@ -15,6 +16,7 @@ const App = createStackNavigator(
     ChatScreen: { screen: ChatScreen },
     PhotoCardDetails: { screen: PhotoCardDetails },
     Faq: { screen: Faq },
+    NewSearch: { screen: NewSearch },
   },
   {
     index: 0,

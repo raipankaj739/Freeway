@@ -25,22 +25,31 @@ import styles from "./styles";
 
 var { height } = Dimensions.get("window");
 
-class chatScreen extends Component {
-  state = {
-    messages: [],
-  };
+class ChatScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: [],
+    };
+    this.convId = this.props.navigation.state.params.convId;
+    this.name = this.props.navigation.state.params.name;
+    this.photoURL = this.props.navigation.state.params.photoURL;
+    this.lastMsg = this.props.navigation.state.params.lastMsg;
+
+    this.onSend = this.onSend.bind(this);
+  }
 
   componentDidMount() {
     this.setState({
       messages: [
         {
           _id: 1,
-          text: "Hello",
+          text: this.lastMsg,
           createdAt: new Date(),
           user: {
             _id: 2,
             name: "React Native",
-            avatar: "https://placeimg.com/140/140/any",
+            avatar: this.photoURL,
           },
         },
       ],
@@ -55,15 +64,31 @@ class chatScreen extends Component {
 
   render() {
     return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={(messages) => this.onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-      />
+      <Container style={{ backgroundColor: "#FFF" }}>
+        <SafeAreaView />
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="ios-arrow-back" />
+            </Button>
+          </Left>
+          <Body style={{ flex: 3 }}>
+            <Title>{this.name}</Title>
+          </Body>
+          <Right />
+        </Header>
+        <View style={{ flex: 1 }}>
+          <GiftedChat
+            messages={this.state.messages}
+            onSend={this.onSend}
+            user={{
+              _id: 1,
+            }}
+          />
+        </View>
+      </Container>
     );
   }
 }
 
-export default connect()(chatScreen);
+export default connect()(ChatScreen);

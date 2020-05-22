@@ -75,7 +75,7 @@ class Login extends Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: "g@gmail.com",
+        email: "a@gmail.com",
         oauthid: "123456",
       }),
     })
@@ -90,73 +90,80 @@ class Login extends Component {
   }
 
   async login() {
-    // await this.sendLoginRequest();
-    // if (!this.state.isLoading) {
-    //   console.log(this.state.dataSource);
-    //   if (this.state.dataSource === "Login acknowledged") {
-    //     this.props.navigation.navigate("HomeTabNavigation");
-    //   } else {
-    //     Alert.alert("Invalid login credential! Please try again");
-    //   }
-    // }
+    await this.sendLoginRequest();
+    if (!this.state.isLoading) {
+      console.log(this.state.dataSource);
+      if (this.state.dataSource === "Login acknowledged") {
+        this.props.navigation.navigate("HomeTabNavigation");
+      } else {
+        Alert.alert("Invalid login credential! Please try again");
+      }
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        {this.state.signedIn ? (
-          this.props.navigation.navigate("HomeTabNavigation")
-        ) : (
-          <LoginPage getGoogleProfile={this.getGoogleProfile} />
-        )}
-      </View>
-      // <Container style={{ backgroundColor: "#fff" }}>
-      //   <StatusBar
-      //     backgroundColor={
-      //       Platform.OS === "android"
-      //         ? commonColor.statusBarColor
-      //         : "transparent"
-      //     }
-      //     barStyle="dark-content"
-      //   />
-      //   <Content scrollEnabled={false}>
-      // <Swiper
-      //   height={deviceHeight / 1.5}
-      //   loop={false}
-      //   dot={<View style={styles.swiperDot} />}
-      //   activeDot={<View style={styles.swiperActiveDot} />}
-      // >
-      // <View style={styles.swiperSlidesView}>
-      //   <View style={styles.swiperImageView}>
-      //     <Image source={require("../../../assets/fw_logo.png")} />
-      //   </View>
-      //   <Text style={styles.loginText}>
-      //     Freeway - Connecting People in Need (PiN) with Volunteers
-      //   </Text>
-      // </View>
-      // </Swiper>
+      <Container style={{ backgroundColor: "#fff" }}>
+        <StatusBar
+          backgroundColor={
+            Platform.OS === "android"
+              ? commonColor.statusBarColor
+              : "transparent"
+          }
+          barStyle="dark-content"
+        />
+        <Content scrollEnabled={false}>
+          <Swiper
+            height={deviceHeight / 1.5}
+            loop={false}
+            dot={<View style={styles.swiperDot} />}
+            activeDot={<View style={styles.swiperActiveDot} />}
+          >
+            <View style={styles.swiperSlidesView}>
+              <View style={styles.swiperImageView}>
+                <Image source={require("../../../assets/fw_logo.png")} />
+              </View>
+              <Text style={styles.loginText}>
+                Freeway - Connecting People in Need (PiN) with Volunteers
+              </Text>
+            </View>
+          </Swiper>
 
-      //     <Button block style={styles.loginBtn} onPress={() => this.login()}>
-      //       <Text style={styles.loginBtnText}>Sign in with Google</Text>
-      //     </Button>
-      //   </Content>
-      // </Container>
+          <Button
+            block
+            style={styles.loginBtn}
+            onPress={() => {
+              this.login();
+            }}
+          >
+            <Text style={styles.loginBtnText}>Sign in with Google</Text>
+          </Button>
+        </Content>
+      </Container>
     );
   }
+
+  // render() {
+  //   return (
+  //     <View style={styles.container}>
+  //       {this.state.signedIn ? (
+  //         this.props.navigation.navigate("HomeTabNavigation")
+  //       ) : (
+  //         <LoginPage getGoogleProfile={this.getGoogleProfile} />
+  //       )}
+  //     </View>
+  //   );
+  // }
 }
 
 function makeLogin(context) {
   return new Promise(function(resolve, reject) {
     email = context.state.email;
     idToken = context.state.idToken;
-
-    console.log("Making Login");
-
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+    console.log(idToken);
     var raw = JSON.stringify({ email: email, oauthid: idToken });
-
     var requestOptions = {
       method: "POST",
       credentials: "include",
@@ -164,7 +171,6 @@ function makeLogin(context) {
       body: raw,
       redirect: "follow",
     };
-
     fetch(
       "http://freeway.eastus.cloudapp.azure.com:8000/api/login",
       requestOptions
@@ -186,15 +192,12 @@ function makeLogin(context) {
 function signUpUser(context) {
   return new Promise(function(resolve, reject) {
     console.log("signup");
-
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
     name = context.state.name;
     photoURL = context.state.photoUrl;
     email = context.state.email;
     idToken = context.state.idToken;
-
     var raw = JSON.stringify({
       email: email,
       oauthid: idToken,
@@ -203,9 +206,7 @@ function signUpUser(context) {
       location: " ",
       bio: " ",
     });
-
     console.log(raw);
-
     var requestOptions = {
       method: "POST",
       credentials: "include",
@@ -237,7 +238,12 @@ const LoginPage = (props) => {
       <Text style={styles.loginText}>
         Freeway - Connecting People in Need (PiN) with Volunteers
       </Text>
-      <Button style={styles.loginBtn} onPress={() => props.getGoogleProfile()}>
+      <Button
+        style={styles.loginBtn}
+        onPress={() => {
+          props.getGoogleProfile();
+        }}
+      >
         <Text style={styles.loginBtnText}>Sign In With Google</Text>
       </Button>
     </View>
