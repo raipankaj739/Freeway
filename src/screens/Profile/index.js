@@ -77,6 +77,18 @@ class Profile extends Component {
                 <Text style={{ fontWeight: "700" }}>Bio: </Text>
                 {profileBio}
               </Text>
+              <View style={styles.goingOutView}>
+                <Button
+                  transparent
+                  style={styles.settingsBtn}
+                  onPress={() => {
+                    this.state.updateFeed = true;
+                    navigation.navigate("SetBioAndLocation");
+                  }}
+                >
+                  <Text style={styles.settingsBtnText}>Edit Bio</Text>
+                </Button>
+              </View>
             </View>
           </Content>
           <View style={styles.goingOutView}>

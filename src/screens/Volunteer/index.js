@@ -64,13 +64,15 @@ class Volunteer extends Component {
       .catch((error) => console.log("error:", error));
   }
 
-  async sendSwipeInfo(volunteerId, swipeVal) {
+  async sendSwipeInfo(volunteerId, taskId, swipeVal) {
     swipeVal == "False"
       ? this._deckSwiper._root.swipeLeft()
       : this._deckSwiper._root.swipeRight();
 
     return await fetch(
-      "http://freeway.eastus.cloudapp.azure.com:8000/api/swipe/p/655d2c7a-bccb-4afc-908f-012e5ec65c85/" +
+      "http://freeway.eastus.cloudapp.azure.com:8000/api/swipe/v/" +
+        taskId +
+        "/" +
         volunteerId +
         "/" +
         swipeVal,
@@ -162,7 +164,9 @@ class Volunteer extends Component {
                     <Right>
                       <Button
                         style={styles.bottomRoundedPills}
-                        onPress={() => this.sendSwipeInfo(item.id, "True")}
+                        onPress={() =>
+                          this.sendSwipeInfo(item.id, item.taskid, "True")
+                        }
                       >
                         <Icon
                           name="md-heart"

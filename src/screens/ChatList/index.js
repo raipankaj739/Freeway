@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Text, SafeAreaView, ActivityIndicator, View } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  ActivityIndicator,
+  View,
+  FlatList,
+} from "react-native";
 import {
   Container,
   Content,
@@ -71,7 +77,7 @@ class ChatList extends Component {
           <Header>
             <Title>Matches</Title>
           </Header>
-          <Content>
+          {/* <Content>
             <List
               removeClippedSubviews={false}
               style={{ marginTop: 7 }}
@@ -101,6 +107,37 @@ class ChatList extends Component {
                   </Body>
                 </ListItem>
               )}
+            />
+          </Content> */}
+          <Content>
+            <FlatList
+              data={this.state.dataSource}
+              renderItem={({ item }) => (
+                <ListItem
+                  avatar
+                  button
+                  style={{ marginLeft: 15 }}
+                  onPress={() =>
+                    navigation.dispatch(
+                      navigateAction(
+                        item.id,
+                        item.name,
+                        item.photourl,
+                        item.lastmsg
+                      )
+                    )
+                  }
+                >
+                  <Left>
+                    <Thumbnail round source={{ uri: item.photourl }} />
+                  </Left>
+                  <Body>
+                    <Text style={styles.userNameText}>{item.name}</Text>
+                    <Text style={styles.distanceText}>{item.lastmsg}</Text>
+                  </Body>
+                </ListItem>
+              )}
+              keyExtractor={(item, index) => index.toString()}
             />
           </Content>
         </Container>

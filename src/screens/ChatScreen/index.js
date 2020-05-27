@@ -48,18 +48,65 @@ class ChatScreen extends Component {
           createdAt: new Date(),
           user: {
             _id: 2,
-            name: "React Native",
+            name: this.name,
             avatar: this.photoURL,
           },
         },
       ],
     });
+    // return fetch(
+    //   "http://freeway.eastus.cloudapp.azure.com:8000/api/messages/" +
+    //     this.convId,
+    //   {
+    //     method: "GET",
+    //     credentials: "include",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // )
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     this.setState({
+    //       messages: result,
+    //     });
+    //   })
+    //   .catch((error) => this.setState({ isLoading: false }));
   }
 
   onSend(messages = []) {
+    console.log(messages[0].text);
     this.setState((previousState) => ({
       messages: GiftedChat.append(previousState.messages, messages),
     }));
+
+    return fetch(
+      "http://freeway.eastus.cloudapp.azure.com:8000/api/messages/" +
+        this.convId,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: messages[0].text,
+        }),
+      }
+    )
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result);
+        this.setState({
+          isLoading: false,
+          swipeResponse: result,
+        });
+      })
+      .catch((error) => {
+        console.log("error:", error);
+      });
   }
 
   render() {
@@ -84,7 +131,7 @@ class ChatScreen extends Component {
             user={{
               _id: 1,
             }}
-          />
+          ></GiftedChat>
         </View>
       </Container>
     );

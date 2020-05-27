@@ -7,6 +7,7 @@ import ChatScreen from "./screens/ChatScreen";
 import PhotoCardDetails from "./screens/PhotoCardDetails";
 import Faq from "./screens/Faq";
 import NewSearch from "./screens/NewSearch";
+import SetBioAndLocation from "./screens/EditBioAndLocation";
 
 const App = createStackNavigator(
   {
@@ -17,6 +18,7 @@ const App = createStackNavigator(
     PhotoCardDetails: { screen: PhotoCardDetails },
     Faq: { screen: Faq },
     NewSearch: { screen: NewSearch },
+    SetBioAndLocation: { screen: SetBioAndLocation },
   },
   {
     index: 0,

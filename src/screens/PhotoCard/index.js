@@ -120,12 +120,15 @@ class PhotoCard extends Component {
     )
       .then((response) => response.text())
       .then((result) => {
+        console.log(result);
         this.setState({
           isLoading: false,
           swipeResponse: result,
         });
       })
-      .catch((error) => console.log("error:", error));
+      .catch((error) => {
+        console.log("error:", error);
+      });
   }
 
   render() {
@@ -136,9 +139,6 @@ class PhotoCard extends Component {
         ? this.props.navigation.state.params.taskID
         : null;
     console.log(this.taskId);
-    // this.state.dataSource
-    //   ? console.log(this.state.dataSource[0])
-    //   : console.log("no task found");
     if (this.state.isLoading) {
       return (
         <View>

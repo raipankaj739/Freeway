@@ -67,18 +67,21 @@ class Login extends Component {
   };
 
   sendLoginRequest() {
-    return fetch("http://freeway.eastus.cloudapp.azure.com:8000/api/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: "a@gmail.com",
-        oauthid: "123456",
-      }),
-    })
+    return fetch(
+      "http://freeway.eastus.cloudapp.azure.com:8000/api/login-legacy",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "a@gmail.com",
+          oauthid: "123456",
+        }),
+      }
+    )
       .then((response) => response.text())
       .then((result) => {
         this.setState({
