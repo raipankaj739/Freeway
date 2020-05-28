@@ -25,10 +25,15 @@ import { NavigationActions } from "react-navigation";
 import styles from "./styles";
 import data from "./data";
 
-const navigateAction = (id, name, photourl, lastmsg) =>
+const navigateAction = (id, name, photourl, partnerid) =>
   NavigationActions.navigate({
     routeName: "ChatScreen",
-    params: { convId: id, name: name, photoURL: photourl, lastMsg: lastmsg },
+    params: {
+      convId: id,
+      name: name,
+      photoURL: photourl,
+      partnerID: partnerid,
+    },
   });
 
 class ChatList extends Component {
@@ -77,38 +82,6 @@ class ChatList extends Component {
           <Header>
             <Title>Matches</Title>
           </Header>
-          {/* <Content>
-            <List
-              removeClippedSubviews={false}
-              style={{ marginTop: 7 }}
-              dataArray={this.state.dataSource}
-              renderRow={(dataRow) => (
-                <ListItem
-                  avatar
-                  button
-                  style={{ marginLeft: 15 }}
-                  onPress={() =>
-                    navigation.dispatch(
-                      navigateAction(
-                        dataRow.id,
-                        dataRow.name,
-                        dataRow.photourl,
-                        dataRow.lastmsg
-                      )
-                    )
-                  }
-                >
-                  <Left>
-                    <Thumbnail round source={{ uri: dataRow.photourl }} />
-                  </Left>
-                  <Body>
-                    <Text style={styles.userNameText}>{dataRow.name}</Text>
-                    <Text style={styles.distanceText}>{dataRow.lastmsg}</Text>
-                  </Body>
-                </ListItem>
-              )}
-            />
-          </Content> */}
           <Content>
             <FlatList
               data={this.state.dataSource}
@@ -123,7 +96,7 @@ class ChatList extends Component {
                         item.id,
                         item.name,
                         item.photourl,
-                        item.lastmsg
+                        item.partnerid
                       )
                     )
                   }
@@ -137,7 +110,7 @@ class ChatList extends Component {
                   </Body>
                 </ListItem>
               )}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(index) => index.toString()}
             />
           </Content>
         </Container>
