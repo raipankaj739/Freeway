@@ -24,6 +24,7 @@ import { GiftedChat } from "react-native-gifted-chat";
 var { height } = Dimensions.get("window");
 
 class ChatScreen extends Component {
+  // intervalID;
   constructor(props) {
     super(props);
     this.state = {
@@ -34,8 +35,13 @@ class ChatScreen extends Component {
     this.name = this.props.navigation.state.params.name;
     this.photoURL = this.props.navigation.state.params.photoURL;
     this.partnerID = this.props.navigation.state.params.partnerID;
-
+    this.num = 1;
     this.onSend = this.onSend.bind(this);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("IN componentDidUpdate", this.num++);
+    //this.parseMsgResponse();
   }
 
   async getMessages() {
@@ -60,12 +66,10 @@ class ChatScreen extends Component {
       .catch((error) => console.log("error:", error));
   }
 
-  async componentDidMount() {
+  async parseMsgResponse() {
     await this.getMessages();
-    console.log(this.state.conversation);
     var msgArray = [];
     for (let i = 0; i < this.state.conversation.length; i++) {
-      console.log(this.state.conversation[i]);
       var dateStr = this.state.conversation[i].datecreated;
       var year = dateStr.substring(0, 4);
       var month = dateStr.substring(5, 7);
@@ -73,7 +77,6 @@ class ChatScreen extends Component {
       var hr = dateStr.substring(11, 13);
       var min = dateStr.substring(14, 16);
       var sec = dateStr.substring(17, 19);
-      console.log(year, month, day, hr, min, sec);
       var senderID =
         this.state.conversation[i].senderid === this.partnerID
           ? this.partnerID
@@ -81,7 +84,7 @@ class ChatScreen extends Component {
       const obj = {
         _id: this.state.conversation[i].msg_id,
         text: this.state.conversation[i].content,
-        createdAt: new Date(year, month, day, hr, min, sec),
+        createdAt: new Date(year, month - 1, day, hr, min, sec),
         user: {
           _id: senderID,
           name: this.name,
@@ -96,49 +99,51 @@ class ChatScreen extends Component {
         messages: GiftedChat.append(previousState.messages, msgArray),
       };
     });
+  }
 
-    // this.setState({
-    //   messages: [
-    //     {
-    //       _id: 2,
-    //       text: "hello",
-    //       createdAt: new Date(2018, 12, 10, 10, 10),
-    //       user: {
-    //         _id: this.partnerID,
-    //         name: this.name,
-    //         avatar: this.photoURL,
-    //       },
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
+  componentDidMount() {
+    this.parseMsgResponse();
+    // this.intervalID = setInterval(() => this.parseMsgResponse(), 1000);
+    // await this.getMessages();
+    // var msgArray = [];
+    // for (let i = 0; i < this.state.conversation.length; i++) {
+    //   var dateStr = this.state.conversation[i].datecreated;
+    //   var year = dateStr.substring(0, 4);
+    //   var month = dateStr.substring(5, 7);
+    //   var day = dateStr.substring(8, 10);
+    //   var hr = dateStr.substring(11, 13);
+    //   var min = dateStr.substring(14, 16);
+    //   var sec = dateStr.substring(17, 19);
+    //   var senderID =
+    //     this.state.conversation[i].senderid === this.partnerID
+    //       ? this.partnerID
+    //       : 1;
+    //   const obj = {
+    //     _id: this.state.conversation[i].msg_id,
+    //     text: this.state.conversation[i].content,
+    //     createdAt: new Date(year, month - 1, day, hr, min, sec),
+    //     user: {
+    //       _id: senderID,
+    //       name: this.name,
+    //       avatar: this.photoURL,
     //     },
-    //     {
-    //       _id: 3,
-    //       text: "hello0000000",
-    //       createdAt: new Date(2019, 12, 10, 10, 10),
-    //       user: {
-    //         _id: 1,
-    //         name: this.name,
-    //         avatar: this.photoURL,
-    //       },
-    //     },
-    //     {
-    //       _id: 1,
-    //       text: "there",
-    //       createdAt: new Date(2020, 12, 10, 10, 10),
-    //       user: {
-    //         _id: this.partnerID,
-    //         name: this.name,
-    //         avatar: this.photoURL,
-    //       },
-    //     },
-    //   ],
+    //   };
+    //   msgArray.push(obj);
+    // }
+
+    // this.setState((previousState) => {
+    //   return {
+    //     messages: GiftedChat.append(previousState.messages, msgArray),
+    //   };
     // });
   }
 
   onSend(messages = []) {
-    this.setState((previousState) => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
-
-    return fetch(
+    fetch(
       "http://freeway.eastus.cloudapp.azure.com:8000/api/messages/" +
         this.convId,
       {
@@ -153,17 +158,21 @@ class ChatScreen extends Component {
         }),
       }
     )
-      .then((response) => response.text())
-      .then((result) => {
-        console.log(result);
-        this.setState({
-          isLoading: false,
-          swipeResponse: result,
-        });
-      })
+      // .then((response) => response.text())
+      // .then((result) => {
+      //   console.log(result);
+      //   this.setState({
+      //     isLoading: false,
+      //     swipeResponse: result,
+      //   });
+      // })
       .catch((error) => {
         console.log("error:", error);
       });
+    this.parseMsgResponse();
+    // this.setState((previousState) => ({
+    //   messages: GiftedChat.append(previousState.messages, messages),
+    // }));
   }
 
   render() {

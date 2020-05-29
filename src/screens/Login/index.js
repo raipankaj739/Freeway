@@ -77,7 +77,7 @@ class Login extends Component {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "e@gmail.com",
+          email: "a@gmail.com",
           oauthid: "123456",
         }),
       }

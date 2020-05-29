@@ -37,15 +37,21 @@ const navigateAction = (id, name, photourl, partnerid) =>
   });
 
 class ChatList extends Component {
+  // intervalID;
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
       dataSource: null,
     };
+    this.num = 1;
   }
 
-  async componentDidMount() {
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log("IN componentDidUpdate", this.num++);
+  // }
+
+  async getChatList() {
     return await fetch(
       "http://freeway.eastus.cloudapp.azure.com:8000/api/conversations",
       {
@@ -67,6 +73,34 @@ class ChatList extends Component {
       .catch((error) => console.log("error:", error));
   }
 
+  componentWillUnmount() {
+    clearInterval(this.intervalID);
+  }
+
+  componentDidMount() {
+    this.getChatList();
+    // this.intervalID = setInterval(() => this.getChatList(), 1000);
+    // return await fetch(
+    //   "http://freeway.eastus.cloudapp.azure.com:8000/api/conversations",
+    //   {
+    //     method: "GET",
+    //     credentials: "include",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // )
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     this.setState({
+    //       isLoading: false,
+    //       dataSource: result,
+    //     });
+    //   })
+    //   .catch((error) => console.log("error:", error));
+  }
+
   render() {
     if (this.state.isLoading) {
       return (
@@ -84,7 +118,9 @@ class ChatList extends Component {
           </Header>
           <Content>
             <FlatList
+              extraData={this.state}
               data={this.state.dataSource}
+              keyExtractor={(data, index) => index.toString()}
               renderItem={({ item }) => (
                 <ListItem
                   avatar
@@ -110,7 +146,6 @@ class ChatList extends Component {
                   </Body>
                 </ListItem>
               )}
-              keyExtractor={(index) => index.toString()}
             />
           </Content>
         </Container>

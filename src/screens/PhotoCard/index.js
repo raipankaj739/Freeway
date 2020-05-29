@@ -46,7 +46,7 @@ class PhotoCard extends Component {
   }
 
   async componentDidMount() {
-    console.log("In componentDidMount()");
+    console.log("In componentDidMount");
     return await fetch(
       "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" + this.taskId,
       {
@@ -70,7 +70,7 @@ class PhotoCard extends Component {
 
   async componentDidUpdate(prevState, prevProps) {
     if (this.state.updateFeed) {
-      console.log("In componentDidUpdate()");
+      console.log("In componentDidUpdate");
       this.state.updateFeed = false;
       return await fetch(
         "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" +
@@ -86,7 +86,6 @@ class PhotoCard extends Component {
       )
         .then((response) => response.json())
         .then((result) => {
-          // console.log(result);
           this.setState({
             isLoading: false,
             dataSource: result,
@@ -97,7 +96,7 @@ class PhotoCard extends Component {
   }
 
   async sendSwipeInfo(volunteerId, swipeVal) {
-    console.log("In sendSwipeInfo()");
+    console.log("In sendSwipeInfo");
     swipeVal == "False"
       ? this._deckSwiper._root.swipeLeft()
       : this._deckSwiper._root.swipeRight();
@@ -120,7 +119,6 @@ class PhotoCard extends Component {
     )
       .then((response) => response.text())
       .then((result) => {
-        console.log(result);
         this.setState({
           isLoading: false,
           swipeResponse: result,
@@ -133,12 +131,11 @@ class PhotoCard extends Component {
 
   render() {
     const navigation = this.props.navigation;
-    console.log("==============================", this.state.num++);
+    console.log("=============RENDER=================", this.state.num++);
     this.taskId =
       typeof this.props.navigation.state.params != "undefined"
         ? this.props.navigation.state.params.taskID
         : null;
-    console.log(this.taskId);
     if (this.state.isLoading) {
       return (
         <View>
@@ -146,10 +143,9 @@ class PhotoCard extends Component {
         </View>
       );
     } else {
-      console.log("IN RENDER");
-      this.state.dataSource
-        ? console.log(this.state.dataSource[0])
-        : console.log("no task found");
+      // this.state.dataSource
+      //   ? console.log(this.state.dataSource[0])
+      //   : console.log("no task found");
       if (this.state.dataSource) {
         return (
           <Container>
@@ -171,10 +167,6 @@ class PhotoCard extends Component {
                         <Thumbnail source={{ uri: item.photourl }} />
                         <Body>
                           <Text>{item.name}</Text>
-                          {console.log(
-                            "IN renderItem()",
-                            this.state.dataSource[0]
-                          )}
                         </Body>
                       </Left>
                     </CardItem>
