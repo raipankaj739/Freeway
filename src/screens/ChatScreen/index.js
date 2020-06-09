@@ -136,12 +136,7 @@ class ChatScreen extends Component {
               transparent
               // onPress={() => this.props.navigation.dispatch(navigateAction())}
               // onPress={() => this.props.navigation.navigate("ChatList")}
-              // onPress={() => this.props.navigation.goBack()}
-              onPress={() =>
-                this.props.navigation.reset({
-                  routeName: "ChatList",
-                })
-              }
+              onPress={() => this.props.navigation.goBack()}
             >
               <Thumbnail
                 small

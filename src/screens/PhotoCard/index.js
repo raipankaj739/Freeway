@@ -36,7 +36,6 @@ class PhotoCard extends Component {
       dataSource: null,
       num: 1,
       swipeResponse: null,
-      // updateFeed: false,
     };
     this._deckSwiper = null;
     this.taskId =
@@ -59,7 +58,6 @@ class PhotoCard extends Component {
     )
       .then((response) => response.json())
       .then((result) => {
-        //console.log(result);
         this.setState({
           isLoading: false,
           dataSource: result,
@@ -72,63 +70,10 @@ class PhotoCard extends Component {
   }
 
   async componentDidMount() {
-    console.log("In componentDidMount");
     await this.getFeed();
-    // return await fetch(
-    //   "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" + this.taskId,
-    //   {
-    //     method: "GET",
-    //     credentials: "include",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // )
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     console.log(result);
-    //     this.setState({
-    //       isLoading: false,
-    //       dataSource: result,
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     console.log("error", error);
-    //     this.setState({ isLoading: false });
-    //   });
   }
 
-  async componentDidUpdate(prevState, prevProps) {
-    // if (this.state.updateFeed) {
-    //   console.log("In componentDidUpdate");
-    //   this.state.updateFeed = false;
-    //   await this.getFeed();
-    //   // return await fetch(
-    //   //   "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" +
-    //   //     this.taskId,
-    //   //   {
-    //   //     method: "GET",
-    //   //     credentials: "include",
-    //   //     headers: {
-    //   //       Accept: "application/json",
-    //   //       "Content-Type": "application/json",
-    //   //     },
-    //   //   }
-    //   // )
-    //   //   .then((response) => response.json())
-    //   //   .then((result) => {
-    //   //     this.setState({
-    //   //       isLoading: false,
-    //   //       dataSource: result,
-    //   //     });
-    //   //   })
-    //   //   .catch((error) => {
-    //   //     console.log("error", error);
-    //   //     this.setState({ isLoading: false });
-    //   //   });
-    // }
-  }
+  async componentDidUpdate(prevState, prevProps) {}
 
   async sendSwipeInfo(volunteerId, swipeVal) {
     console.log("In sendSwipeInfo");
@@ -178,9 +123,6 @@ class PhotoCard extends Component {
         </View>
       );
     } else {
-      // this.state.dataSource
-      //   ? console.log(this.state.dataSource[0])
-      //   : console.log("no task found");
       if (this.state.dataSource) {
         return (
           <Container>
@@ -302,7 +244,6 @@ class PhotoCard extends Component {
                 rounded
                 style={styles.logoutBtn}
                 onPress={() => {
-                  // this.state.updateFeed = true;
                   navigation.replace("NewSearch");
                 }}
               >

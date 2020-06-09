@@ -70,7 +70,18 @@ class ChatList extends Component {
 
   async componentDidMount() {
     await this.getChatList();
+    this.willFocusSubscription = this.props.navigation.addListener(
+      "willFocus",
+      () => {
+        this.getChatList();
+      }
+    );
   }
+
+  componentWillUnmount() {
+    this.willFocusSubscription.remove();
+  }
+
   async componentDidUpdate(prevState, prevProps) {}
 
   render() {
