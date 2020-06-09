@@ -9,11 +9,11 @@ import {
   Body,
   Grid,
   Row,
-  Icon,
   Button,
+  Thumbnail,
 } from "native-base";
 import styles from "./styles";
-import data from "./data";
+// import PhotoCard from "../PhotoCard";
 import { NavigationActions } from "react-navigation";
 
 var Dimensions = require("Dimensions");
@@ -62,6 +62,7 @@ class NewSearch extends Component {
     const navigation = this.props.navigation;
     await this.sendTask(taskDescription);
     navigation.dispatch(navigateAction(this.state.newTaskResponse));
+    // new PhotoCard().getFeed();
   }
 
   render() {
@@ -85,10 +86,14 @@ class NewSearch extends Component {
                 onPress={() => this.getTaskId(this.state.taskDesc)}
                 style={styles.bottomRoundedPillsBtn}
               >
-                <Icon
+                {/* <Icon
                   active
                   name="md-search"
                   style={styles.bottomRoundedPillsCloseIcon}
+                /> */}
+                <Thumbnail
+                  small
+                  source={require("../../../assets/search_icon.png")}
                 />
               </Button>
             </Row>

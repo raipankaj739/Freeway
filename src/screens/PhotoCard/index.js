@@ -2,13 +2,13 @@ import React, { Component, useRef } from "react";
 import { Image, ImageBackground, ActivityIndicator, Alert } from "react-native";
 import {
   Container,
+  Icon,
   Text,
   Card,
   CardItem,
   DeckSwiper,
   Grid,
   Row,
-  Icon,
   Button,
   Right,
   Body,
@@ -36,7 +36,7 @@ class PhotoCard extends Component {
       dataSource: null,
       num: 1,
       swipeResponse: null,
-      updateFeed: false,
+      // updateFeed: false,
     };
     this._deckSwiper = null;
     this.taskId =
@@ -45,8 +45,7 @@ class PhotoCard extends Component {
         : null;
   }
 
-  async componentDidMount() {
-    console.log("In componentDidMount");
+  async getFeed() {
     return await fetch(
       "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" + this.taskId,
       {
@@ -60,39 +59,75 @@ class PhotoCard extends Component {
     )
       .then((response) => response.json())
       .then((result) => {
+        //console.log(result);
         this.setState({
           isLoading: false,
           dataSource: result,
         });
       })
-      .catch((error) => this.setState({ isLoading: false }));
+      .catch((error) => {
+        console.log("error", error);
+        this.setState({ isLoading: false });
+      });
+  }
+
+  async componentDidMount() {
+    console.log("In componentDidMount");
+    await this.getFeed();
+    // return await fetch(
+    //   "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" + this.taskId,
+    //   {
+    //     method: "GET",
+    //     credentials: "include",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // )
+    //   .then((response) => response.json())
+    //   .then((result) => {
+    //     console.log(result);
+    //     this.setState({
+    //       isLoading: false,
+    //       dataSource: result,
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log("error", error);
+    //     this.setState({ isLoading: false });
+    //   });
   }
 
   async componentDidUpdate(prevState, prevProps) {
-    if (this.state.updateFeed) {
-      console.log("In componentDidUpdate");
-      this.state.updateFeed = false;
-      return await fetch(
-        "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" +
-          this.taskId,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          this.setState({
-            isLoading: false,
-            dataSource: result,
-          });
-        })
-        .catch((error) => this.setState({ isLoading: false }));
-    }
+    // if (this.state.updateFeed) {
+    //   console.log("In componentDidUpdate");
+    //   this.state.updateFeed = false;
+    //   await this.getFeed();
+    //   // return await fetch(
+    //   //   "http://freeway.eastus.cloudapp.azure.com:8000/api/feed/p/" +
+    //   //     this.taskId,
+    //   //   {
+    //   //     method: "GET",
+    //   //     credentials: "include",
+    //   //     headers: {
+    //   //       Accept: "application/json",
+    //   //       "Content-Type": "application/json",
+    //   //     },
+    //   //   }
+    //   // )
+    //   //   .then((response) => response.json())
+    //   //   .then((result) => {
+    //   //     this.setState({
+    //   //       isLoading: false,
+    //   //       dataSource: result,
+    //   //     });
+    //   //   })
+    //   //   .catch((error) => {
+    //   //     console.log("error", error);
+    //   //     this.setState({ isLoading: false });
+    //   //   });
+    // }
   }
 
   async sendSwipeInfo(volunteerId, swipeVal) {
@@ -149,7 +184,7 @@ class PhotoCard extends Component {
       if (this.state.dataSource) {
         return (
           <Container>
-            <Header />
+            {/* <Header /> */}
             <View style={styles.deckswiperView}>
               <DeckSwiper
                 ref={(c) => (this._deckSwiper = c)}
@@ -157,7 +192,10 @@ class PhotoCard extends Component {
                 looping={false}
                 renderEmpty={() => (
                   <View style={{ align: "center" }}>
-                    <Text>No cards to display!!!!</Text>
+                    <Text>
+                      No cards to display. Click start new search to look for
+                      volunteers
+                    </Text>
                   </View>
                 )}
                 renderItem={(item) => (
@@ -193,13 +231,17 @@ class PhotoCard extends Component {
                           style={styles.bottomRoundedPills}
                           onPress={() => this.sendSwipeInfo(item.id, "False")}
                         >
-                          <Icon
+                          {/* <Icon
                             name="md-close"
                             style={{
                               color: commonColor.brandDanger,
                               fontSize: 40,
                               lineHeight: 40,
                             }}
+                          /> */}
+                          <Thumbnail
+                            small
+                            source={require("../../../assets/close_icon.png")}
                           />
                         </Button>
                       </Body>
@@ -208,7 +250,7 @@ class PhotoCard extends Component {
                           style={styles.bottomRoundedPills}
                           onPress={() => this.sendSwipeInfo(item.id, "True")}
                         >
-                          <Icon
+                          {/* <Icon
                             name="md-heart"
                             style={{
                               color: commonColor.brandSuccess,
@@ -217,6 +259,10 @@ class PhotoCard extends Component {
                               marginLeft: 2,
                               marginRight: 2,
                             }}
+                          /> */}
+                          <Thumbnail
+                            small
+                            source={require("../../../assets/heart_icon.png")}
                           />
                         </Button>
                       </Right>
@@ -227,14 +273,15 @@ class PhotoCard extends Component {
             </View>
             <View style={styles.goingOutView}>
               <Button
-                transparent
-                style={styles.settingsBtn}
+                block
+                rounded
+                style={styles.logoutBtn}
                 onPress={() => {
-                  this.state.updateFeed = true;
-                  navigation.navigate("NewSearch");
+                  // this.state.updateFeed = true;
+                  navigation.replace("NewSearch");
                 }}
               >
-                <Text style={styles.settingsBtnText}>Start new search</Text>
+                <Text style={styles.logoutBtnText}>Start new search</Text>
               </Button>
             </View>
           </Container>
@@ -242,7 +289,7 @@ class PhotoCard extends Component {
       } else {
         return (
           <Container>
-            <Header />
+            {/* <Header /> */}
             <View style={styles.deckswiperView}>
               <Text>
                 No cards to display. Click start new search to look for
@@ -251,14 +298,15 @@ class PhotoCard extends Component {
             </View>
             <View style={styles.goingOutView}>
               <Button
-                transparent
-                style={styles.settingsBtn}
+                block
+                rounded
+                style={styles.logoutBtn}
                 onPress={() => {
-                  this.state.updateFeed = true;
-                  navigation.navigate("NewSearch");
+                  // this.state.updateFeed = true;
+                  navigation.replace("NewSearch");
                 }}
               >
-                <Text style={styles.settingsBtnText}>Start new search</Text>
+                <Text style={styles.logoutBtnText}>Start new search</Text>
               </Button>
             </View>
           </Container>

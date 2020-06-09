@@ -1,0 +1,1 @@
+{"ast":null,"code":"export { WebView } from 'react-native';","map":{"version":3,"sources":["../src/WebView.web.ts"],"names":[],"mappings":"AAAA,SAAS,OAAT,QAAwB,cAAxB","sourcesContent":["export { WebView } from 'react-native';\n"],"sourceRoot":""},"metadata":{},"sourceType":"module"}

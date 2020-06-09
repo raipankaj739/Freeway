@@ -37,7 +37,6 @@ const navigateAction = (id, name, photourl, partnerid) =>
   });
 
 class ChatList extends Component {
-  // intervalID;
   constructor(props) {
     super(props);
     this.state = {
@@ -46,10 +45,6 @@ class ChatList extends Component {
     };
     this.num = 1;
   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   console.log("IN componentDidUpdate", this.num++);
-  // }
 
   async getChatList() {
     return await fetch(
@@ -73,33 +68,10 @@ class ChatList extends Component {
       .catch((error) => console.log("error:", error));
   }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalID);
+  async componentDidMount() {
+    await this.getChatList();
   }
-
-  componentDidMount() {
-    this.getChatList();
-    // this.intervalID = setInterval(() => this.getChatList(), 1000);
-    // return await fetch(
-    //   "http://freeway.eastus.cloudapp.azure.com:8000/api/conversations",
-    //   {
-    //     method: "GET",
-    //     credentials: "include",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // )
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     this.setState({
-    //       isLoading: false,
-    //       dataSource: result,
-    //     });
-    //   })
-    //   .catch((error) => console.log("error:", error));
-  }
+  async componentDidUpdate(prevState, prevProps) {}
 
   render() {
     if (this.state.isLoading) {
@@ -154,4 +126,4 @@ class ChatList extends Component {
   }
 }
 
-export default connect()(ChatList);
+export default ChatList;

@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import { View, Image, Platform } from "react-native";
-import { Container, Content, Text, Grid, Row, Icon, Button } from "native-base";
+import {
+  Container,
+  Content,
+  Text,
+  Grid,
+  Row,
+  Icon,
+  Button,
+  Thumbnail,
+} from "native-base";
 import styles from "./styles";
 
 var Dimensions = require("Dimensions");
@@ -35,10 +44,14 @@ class PhotoCardDetails extends Component {
                 onPress={() => this.props.navigation.goBack()}
                 style={styles.bottomRoundedPillsBtn}
               >
-                <Icon
+                {/* <Icon
                   active
                   name="md-arrow-round-back"
                   style={styles.bottomRoundedPillsCloseIcon}
+                /> */}
+                <Thumbnail
+                  small
+                  source={require("../../../assets/back_icon.png")}
                 />
               </Button>
             </Row>

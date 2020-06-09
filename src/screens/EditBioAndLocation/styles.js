@@ -9,6 +9,16 @@ export default {
     fontWeight: "bold",
     marginBottom: 5,
   },
+  logoutBtn: {
+    width: width / 4,
+    alignSelf: "center",
+    marginTop: 10,
+    marginBottom: 30,
+  },
+  logoutBtnText: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
   distanceText: {
     fontSize: 12,
     color: commonColor.lightTextColor,
@@ -39,7 +49,7 @@ export default {
   },
   input: {
     margin: 15,
-    height: 200,
+    height: 100,
     borderColor: "#7a42f4",
     borderWidth: 1,
   },

@@ -13,7 +13,7 @@ const HomeTabNavigation = createMaterialTopTabNavigator(
     Profile: { screen: Profile },
     PhotoCard: { screen: PhotoCard },
     Volunteer: { screen: Volunteer },
-    Chat: { screen: ChatList },
+    ChatList: { screen: ChatList },
   },
   {
     tabBarPosition: "top",
@@ -25,13 +25,12 @@ const HomeTabNavigation = createMaterialTopTabNavigator(
           <Header>
             <FooterTab>
               <Button onPress={() => props.navigation.navigate("Profile")}>
-                <Icon
-                  name="md-person"
-                  size={20}
-                  style={
+                <Thumbnail
+                  small
+                  source={
                     props.navigation.state.index === 0
-                      ? styles.activeIcon
-                      : styles.inActiveIcon
+                      ? require("../../../assets/profile_icon_active.png")
+                      : require("../../../assets/profile_icon_inactive.png")
                   }
                 />
               </Button>
@@ -41,32 +40,40 @@ const HomeTabNavigation = createMaterialTopTabNavigator(
                   small
                   source={
                     props.navigation.state.index === 1
-                      ? require("../../../assets/fw_logo.png")
-                      : require("../../../assets/fw_logo_inactive.png")
+                      ? require("../../../assets/pin_icon_active.png")
+                      : require("../../../assets/pin_icon_inactive.png")
                   }
                 />
               </Button>
 
               <Button onPress={() => props.navigation.navigate("Volunteer")}>
-                <Icon
-                  name="md-hand"
-                  style={
+                <Thumbnail
+                  small
+                  source={
                     props.navigation.state.index === 2
-                      ? styles.activeIcon
-                      : styles.inActiveIcon
+                      ? require("../../../assets/vol_icon_active.png")
+                      : require("../../../assets/vol_icon_inactive.png")
                   }
                 />
               </Button>
 
-              <Button onPress={() => props.navigation.navigate("Chat")}>
-                <Icon
+              <Button onPress={() => props.navigation.navigate("ChatList")}>
+                <Thumbnail
+                  small
+                  source={
+                    props.navigation.state.index === 3
+                      ? require("../../../assets/chat_icon_active.png")
+                      : require("../../../assets/chat_icon_inactive.png")
+                  }
+                />
+                {/* <Icon
                   name="md-chatboxes"
                   style={
                     props.navigation.state.index === 3
                       ? styles.activeIcon
                       : styles.inActiveIcon
                   }
-                />
+                /> */}
               </Button>
             </FooterTab>
           </Header>

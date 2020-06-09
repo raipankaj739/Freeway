@@ -107,7 +107,7 @@ class Volunteer extends Component {
       const navigation = this.props.navigation;
       return (
         <Container>
-          <Header />
+          {/* <Header /> */}
           <View style={styles.deckswiperView}>
             <DeckSwiper
               ref={(c) => (this._deckSwiper = c)}
@@ -151,13 +151,17 @@ class Volunteer extends Component {
                         style={styles.bottomRoundedPills}
                         onPress={() => this.sendSwipeInfo(item.id, "False")}
                       >
-                        <Icon
+                        {/* <Icon
                           name="md-close"
                           style={{
                             color: commonColor.brandDanger,
                             fontSize: 40,
                             lineHeight: 40,
                           }}
+                        /> */}
+                        <Thumbnail
+                          small
+                          source={require("../../../assets/close_icon.png")}
                         />
                       </Button>
                     </Body>
@@ -168,7 +172,7 @@ class Volunteer extends Component {
                           this.sendSwipeInfo(item.id, item.taskid, "True")
                         }
                       >
-                        <Icon
+                        {/* <Icon
                           name="md-heart"
                           style={{
                             color: commonColor.brandSuccess,
@@ -177,6 +181,10 @@ class Volunteer extends Component {
                             marginLeft: 2,
                             marginRight: 2,
                           }}
+                        /> */}
+                        <Thumbnail
+                          small
+                          source={require("../../../assets/heart_icon.png")}
                         />
                       </Button>
                     </Right>

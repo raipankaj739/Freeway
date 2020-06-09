@@ -20,7 +20,8 @@ class Profile extends Component {
       dataSource: null,
     };
   }
-  async componentDidMount() {
+
+  async getFeed() {
     return await fetch(
       "http://freeway.eastus.cloudapp.azure.com:8000/api/profile",
       {
@@ -41,6 +42,23 @@ class Profile extends Component {
       })
       .catch((error) => console.log("error:", error));
   }
+
+  logout() {
+    return fetch("http://freeway.eastus.cloudapp.azure.com:8000/api/logout", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).catch((error) => console.log("error:", error));
+  }
+
+  async componentDidMount() {
+    await this.getFeed();
+  }
+
+  async componentDidUpdate(prevState, prevProps) {}
 
   render() {
     if (this.state.isLoading) {
@@ -82,11 +100,10 @@ class Profile extends Component {
                   transparent
                   style={styles.settingsBtn}
                   onPress={() => {
-                    this.state.updateFeed = true;
-                    navigation.navigate("SetBioAndLocation");
+                    navigation.replace("EditBioAndLocation");
                   }}
                 >
-                  <Text style={styles.settingsBtnText}>Edit Bio</Text>
+                  <Text style={styles.settingsBtnText}>Edit Profile</Text>
                 </Button>
               </View>
             </View>
@@ -104,7 +121,10 @@ class Profile extends Component {
                 block
                 rounded
                 style={styles.logoutBtn}
-                onPress={() => navigation.dispatch(resetAction)}
+                onPress={() => {
+                  this.logout();
+                  navigation.dispatch(resetAction);
+                }}
               >
                 <Text style={styles.logoutBtnText}>Logout</Text>
               </Button>

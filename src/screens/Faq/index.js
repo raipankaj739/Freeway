@@ -11,6 +11,7 @@ import {
   Row,
   Icon,
   Button,
+  Thumbnail,
 } from "native-base";
 import styles from "./styles";
 import data from "./data";
@@ -45,10 +46,9 @@ class Faq extends Component {
                 onPress={() => this.props.navigation.goBack()}
                 style={styles.bottomRoundedPillsBtn}
               >
-                <Icon
-                  active
-                  name="md-arrow-round-back"
-                  style={styles.bottomRoundedPillsCloseIcon}
+                <Thumbnail
+                  small
+                  source={require("../../../assets/back_icon.png")}
                 />
               </Button>
             </Row>

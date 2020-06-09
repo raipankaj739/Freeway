@@ -20,8 +20,14 @@ import {
   Thumbnail,
 } from "native-base";
 import { GiftedChat } from "react-native-gifted-chat";
+import { NavigationActions } from "react-navigation";
 
 var { height } = Dimensions.get("window");
+
+const navigateAction = () =>
+  NavigationActions.navigate({
+    routeName: "ChatList",
+  });
 
 class ChatScreen extends Component {
   // intervalID;
@@ -39,10 +45,7 @@ class ChatScreen extends Component {
     this.onSend = this.onSend.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log("IN componentDidUpdate", this.num++);
-    //this.parseMsgResponse();
-  }
+  async componentDidUpdate(prevProps, prevState) {}
 
   async getMessages() {
     return await fetch(
@@ -93,57 +96,17 @@ class ChatScreen extends Component {
       };
       msgArray.push(obj);
     }
-
-    this.setState((previousState) => {
-      return {
-        messages: GiftedChat.append(previousState.messages, msgArray),
-      };
+    this.setState({
+      messages: msgArray,
     });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.intervalID);
+  async componentDidMount() {
+    await this.parseMsgResponse();
   }
 
-  componentDidMount() {
-    this.parseMsgResponse();
-    // this.intervalID = setInterval(() => this.parseMsgResponse(), 1000);
-    // await this.getMessages();
-    // var msgArray = [];
-    // for (let i = 0; i < this.state.conversation.length; i++) {
-    //   var dateStr = this.state.conversation[i].datecreated;
-    //   var year = dateStr.substring(0, 4);
-    //   var month = dateStr.substring(5, 7);
-    //   var day = dateStr.substring(8, 10);
-    //   var hr = dateStr.substring(11, 13);
-    //   var min = dateStr.substring(14, 16);
-    //   var sec = dateStr.substring(17, 19);
-    //   var senderID =
-    //     this.state.conversation[i].senderid === this.partnerID
-    //       ? this.partnerID
-    //       : 1;
-    //   const obj = {
-    //     _id: this.state.conversation[i].msg_id,
-    //     text: this.state.conversation[i].content,
-    //     createdAt: new Date(year, month - 1, day, hr, min, sec),
-    //     user: {
-    //       _id: senderID,
-    //       name: this.name,
-    //       avatar: this.photoURL,
-    //     },
-    //   };
-    //   msgArray.push(obj);
-    // }
-
-    // this.setState((previousState) => {
-    //   return {
-    //     messages: GiftedChat.append(previousState.messages, msgArray),
-    //   };
-    // });
-  }
-
-  onSend(messages = []) {
-    fetch(
+  async onSend(messages = []) {
+    await fetch(
       "http://freeway.eastus.cloudapp.azure.com:8000/api/messages/" +
         this.convId,
       {
@@ -157,22 +120,10 @@ class ChatScreen extends Component {
           content: messages[0].text,
         }),
       }
-    )
-      // .then((response) => response.text())
-      // .then((result) => {
-      //   console.log(result);
-      //   this.setState({
-      //     isLoading: false,
-      //     swipeResponse: result,
-      //   });
-      // })
-      .catch((error) => {
-        console.log("error:", error);
-      });
+    ).catch((error) => {
+      console.log("error:", error);
+    });
     this.parseMsgResponse();
-    // this.setState((previousState) => ({
-    //   messages: GiftedChat.append(previousState.messages, messages),
-    // }));
   }
 
   render() {
@@ -181,8 +132,21 @@ class ChatScreen extends Component {
         <SafeAreaView />
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="ios-arrow-back" />
+            <Button
+              transparent
+              // onPress={() => this.props.navigation.dispatch(navigateAction())}
+              // onPress={() => this.props.navigation.navigate("ChatList")}
+              // onPress={() => this.props.navigation.goBack()}
+              onPress={() =>
+                this.props.navigation.reset({
+                  routeName: "ChatList",
+                })
+              }
+            >
+              <Thumbnail
+                small
+                source={require("../../../assets/prev_icon.png")}
+              />
             </Button>
           </Left>
           <Body style={{ flex: 3 }}>
@@ -205,4 +169,4 @@ class ChatScreen extends Component {
   }
 }
 
-export default connect()(ChatScreen);
+export default ChatScreen;
